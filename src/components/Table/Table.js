@@ -11,18 +11,20 @@ const Table = (props) => {
     <div>
       <h2>Customers</h2>
       <table id="customers">
-        <tr>
-          <th>Column 1</th>
-          <th>Column 2</th>
-          <th>Column 3</th>
-        </tr>
-        {table.map((row) => (
+        <tbody>
           <tr>
-            {row.map((column) => (
-              <td>{column}</td>
-            ))}
+            <th>Column 1</th>
+            <th>Column 2</th>
+            <th>Column 3</th>
           </tr>
-        ))}
+          {table.map((row, index) => (
+            <tr key={index}>
+              {row.map((column, index) => (
+                <td key={index}>{column}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
       </table>
       <br />
     </div>

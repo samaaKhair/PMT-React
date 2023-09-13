@@ -21,9 +21,9 @@ const NavBar = () => {
       <img src={logo} width="100" height="100" alt="Logo" />
       {/* Navigation Items - Large Screens */}
       <ul>
-        {items.map((item) => (
-          <li key={item}>
-            <a>{item}</a>
+        {items.map((item,index) => (
+          <li key={index}>
+            {item}
           </li>
         ))}
       </ul>
@@ -35,8 +35,8 @@ const NavBar = () => {
       </div>
       {/* Dropdown Menu */}
       <div className={isActive ? "toggledDropdown" : "dropdown-content"}>
-        {items.map((item) => (
-          <a>{item}</a>
+        {items.map((item,index) => (
+          <li key={index}>{item}</li>
         ))}
       </div>
     </div>
