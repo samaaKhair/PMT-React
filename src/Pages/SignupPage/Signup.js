@@ -2,14 +2,15 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Signup.css";
+import axios from "axios";
 
 const Signup = () => {
   // initiating user state
   const [user, setUserInfo] = useState({
     username: "",
     password: "",
-    passwordConfirm: "", //to confirm password similarity
   });
+  const [confirmPassword, setConfirmPassword] = useState("");
   //passsword state to check hidden on visible on toggle
   const [passwordType, setPasswordType] = useState("password");
   // an object to be used in navigation
@@ -18,11 +19,7 @@ const Signup = () => {
   const onUserInfoChange = (e) => {
     setUserInfo({ ...user, [e.target.id]: e.target.value });
   };
-  // TODO: to be removed
-  //sanity check
-  const printData = () => {
-    console.log(`username: ${user.username}\npassword: ${user.password}`);
-  };
+
   //on show/hide button click checks type of password to change it
   const togglePassword = () => {
     if (passwordType === "password") {
@@ -33,17 +30,28 @@ const Signup = () => {
   };
   // confirming password
   const checkPassword = () => {
-    if (user.passwordConfirm === user.password) {
-      printData();
-      navigate("/");
-    } else alert("Password Mismatch :( ");
+    if (confirmPassword !== user.password) {
+      alert("Password Mismatch :( ");
+      return false;
+    } else return true;
   };
-
+  const signUp = () => {
+    if (checkPassword()) {
+      axios
+        .post("http://amanimagdi.pythonanywhere.com/users/", user)
+        .then(() => {
+          navigate("/");
+        })
+        .catch((error) => {
+          alert(error.response.data.username);
+        });
+    }
+  };
   return (
     <div className="SignupMain">
-      <h1 id="header">Sign Up!</h1>
-      {/* container for user name cell */}
-      <div className="cellContainer">
+      <div className="SignupContent">
+        <h1 id="header">Sign Up!</h1>
+
         <label htmlFor="username">Username</label>
         <input
           type="text"
@@ -52,36 +60,41 @@ const Signup = () => {
           onChange={onUserInfoChange}
           autoComplete="off"
         />
-      </div>
-      {/* container for password cell */}
-      <div className="cellContainer">
+
         <label htmlFor="password">Password</label>
-        <input
-          type={passwordType}
-          id="password"
-          value={user.password}
-          onChange={onUserInfoChange}
-          autoComplete="off"
-        />
-        <i className="material-icons" onClick={togglePassword}>
-          {passwordType === "password" ? "visibility" : "visibility_off"}
-        </i>
-      </div>
-      {/* container for confirm password cell*/}
-      <div className="cellContainer">
+        <div className="passwordCell">
+          <input
+            type={passwordType}
+            id="password"
+            value={user.password}
+            onChange={onUserInfoChange}
+            autoComplete="off"
+          />
+          {/* checks if show/hide button is clicked */}
+          <i
+            className={
+              passwordType === "password"
+                ? "visibility fa fa-eye"
+                : "visibility fa fa-eye-slash"
+            }
+            aria-hidden="true"
+            onClick={togglePassword}
+          ></i>
+        </div>
         <label htmlFor="passwordConfirm">Confirm Password</label>
         <input
           type={passwordType}
           id="passwordConfirm"
-          value={user.passwordConfirm}
-          onChange={onUserInfoChange}
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
           autoComplete="off"
         />
+
+        {/* confirms password, if correct redirects to home page */}
+        <button className="SignupBtn" onClick={signUp}>
+          Sign Up
+        </button>
       </div>
-      {/* confirms password, if correct redirects to home page */}
-      <button className="SignupBtn" onClick={checkPassword}>
-        Sign Up
-      </button>
     </div>
   );
 };

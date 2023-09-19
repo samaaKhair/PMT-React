@@ -1,17 +1,49 @@
 .loginMain {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: space-evenly;
-  height: 80vh;
+  height: 100vh;
 }
-.cellContainer {
+.loginContent {
   display: flex;
-  width: 25%;
-  justify-content: space-between;
+  width: max-content;
+  flex-direction: column;
+  padding: 2.5rem;
+  margin: 0px;
+  border: 1px solid rgb(204, 202, 202);
+  border-radius: 5px;
 }
-
-button,
-i {
-  cursor: pointer;
+.loginContent input {
+  margin-bottom: 1rem;
+  padding: 0.8rem 0.6rem;
+  border: 1px solid #b3b3b3;
+  border-radius: 15px;
+}
+.loginContent h1 {
+  align-self: center;
+}
+.loginContent label {
+  margin: 0.9rem 0.6rem;
+  font-size: 1rem;
+  font-weight: bold;
+}
+.loginContent .buttons {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-around;
+}
+.loginBtn {
+  background-color: #5c92ea;
+  color: white;
+}
+.passwordCell {
+  position: relative;
+}
+#password {
+  width: 100%;
+}
+.visibility {
+  position: absolute;
+  right: 15px;
+  top: 13px;
 }

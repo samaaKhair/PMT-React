@@ -2,27 +2,22 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
+import axios from "axios";
 
-const Login = () => {
-  // initiating user state
+const Login = (props) => {
+  const URL = "http://amanimagdi.pythonanywhere.com/api/token/";
   const [user, setUserInfo] = useState({
     username: "",
     password: "",
   });
-  //passsword state to check hidden on visible on toggle
-  const [passwordType, setPasswordType] = useState("password");
+  const [passwordType, setPasswordType] = useState("password"); //passsword state to check hidden on visible on toggle
   // an object to be used in navigation
   const navigate = useNavigate();
   // changes user data dynamically by detecting required info from targeted element
   const onUserInfoChange = (e) => {
     setUserInfo({ ...user, [e.target.id]: e.target.value });
   };
-  // TODO: to be removed
-  //sanity check
-  const HomePageRedirect = () => {
-    console.log(`username: ${user.username}\npassword: ${user.password}`);
-    navigate("/");
-  };
+
   //redirects user to signup page
   const signUpRedirect = () => {
     navigate("/Signup");
@@ -35,12 +30,21 @@ const Login = () => {
     }
     setPasswordType("password");
   };
-
+  const login = () => {
+    axios
+      .post(`${URL}`, user)
+      .then(() => {
+        props.setAuth(true);
+        navigate('/');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   return (
     <div className="loginMain">
-      <h1 id="header">Welcome Back!</h1>
-      {/* container for user name cell */}
-      <div className="cellContainer">
+      <div className="loginContent">
+        <h1 id="header">Welcome Back!</h1>
         <label htmlFor="username">Username</label>
         <input
           type="text"
@@ -49,29 +53,36 @@ const Login = () => {
           onChange={onUserInfoChange}
           autoComplete="off"
         />
-      </div>
-      {/* container for password cell */}
-      <div className="cellContainer">
         <label htmlFor="password">Password</label>
-        <input
-          type={passwordType}
-          id="password"
-          value={user.password}
-          onChange={onUserInfoChange}
-          autoComplete="off"
-        />
-        {/* checks if show/hide button is clicked */}
-        <i className="material-icons" onClick={togglePassword}>
-          {passwordType === "password" ? "visibility" : "visibility_off"}
-        </i>
+        <div className="passwordCell">
+          <input
+            type={passwordType}
+            id="password"
+            value={user.password}
+            onChange={onUserInfoChange}
+            autoComplete="off"
+          />
+          {/* checks if show/hide button is clicked */}
+          <i
+            className={
+              passwordType === "password"
+                ? "visibility fa fa-eye"
+                : "visibility fa fa-eye-slash"
+            }
+            aria-hidden="true"
+            onClick={togglePassword}
+          ></i>
+        </div>
+        <div className="buttons">
+          <button className="SignUpBtn" onClick={signUpRedirect}>
+            Sign Up
+          </button>
+          {/* redirects to home page */}
+          <button className="loginBtn" onClick={login}>
+            Login
+          </button>
+        </div>
       </div>
-      {/* redirects to home page */}
-      <button className="loginBtn" onClick={HomePageRedirect}>
-        Login
-      </button>
-      <button className="SignUpBtn" onClick={signUpRedirect}>
-        Sign Up
-      </button>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import "./Footer.css";
 const Footer = () => {
   return (
     <footer>
-      <center>&copy; copyrights are saved</center>
+      <center>&copy; Copyrights are saved</center>
     </footer>
   );
 };

@@ -23,7 +23,47 @@
   text-align: left;
   color: white;
 }
+.material-icons {
+  padding: 5px;
+}
+.pageTitle{
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  margin-bottom: .3rem;
+}
+.mainTableDiv{
+  min-height: 72.2vh;
+}
+.IconsColumn{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.editIcon{
+  padding: 0 8px;
+  color: rgb(91, 192, 222);
+}
+.deleteIcon{
+  padding: 0 8px;
+  color: #b54235;
+}
+.Header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 0.7rem;
+}
+.addUserIcon{
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  background-color: rgba(255,255,255,0);
+  color: rgb(91, 192, 222);
+}
 
+.addUserIcon i{
+  margin-right:  0.5rem;
+}
 /* For small screens e.g. mobile phones */
 @media only screen and (max-width: 600px) {
   #customers th {
@@ -39,6 +79,6 @@
 }
 @media only screen and (min-width: 992px) {
   #customers th {
-    background-color: rgb(90, 205, 237);
+    background-color:  	rgb(91, 192, 222);
   }
 }

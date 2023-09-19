@@ -1,3 +1,6 @@
 .mainDiv {
   padding: 10px 10px;
 }
+i,button{
+  cursor: pointer;
+}
