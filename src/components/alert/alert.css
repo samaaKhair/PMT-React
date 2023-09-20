@@ -1,0 +1,7 @@
+.alertBox{
+    display: flex;
+    justify-content: center;
+    background-color: rgb(243, 170, 170);
+    color: darkred;
+
+}
