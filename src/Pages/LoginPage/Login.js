@@ -1,27 +1,30 @@
-import React from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import axios from "axios";
 
 const Login = (props) => {
+  // an object to be used in navigation
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (props.isAuth) {
+      navigate("/");
+    }
+  }, [props.isAuth]);
   const URL = "http://amanimagdi.pythonanywhere.com/api/token/";
   const [user, setUserInfo] = useState({
     username: "",
     password: "",
   });
   const [passwordType, setPasswordType] = useState("password"); //passsword state to check hidden on visible on toggle
-  // an object to be used in navigation
-  const navigate = useNavigate();
+
   // changes user data dynamically by detecting required info from targeted element
   const onUserInfoChange = (e) => {
     setUserInfo({ ...user, [e.target.id]: e.target.value });
   };
 
   //redirects user to signup page
-  const signUpRedirect = () => {
-    navigate("/Signup");
-  };
+
   //on show/hide button click checks type of password to change it
   const togglePassword = () => {
     if (passwordType === "password") {
@@ -34,13 +37,16 @@ const Login = (props) => {
     axios
       .post(`${URL}`, user)
       .then(() => {
-        props.setAuth(true);
-        navigate('/');
+        localStorage.setItem("isAuth", true);
+        navigate("/");
       })
       .catch((error) => {
-        console.error(error);
+        alert(error.response.data);
       });
+
+    console.log(localStorage.getItem("isAuth"));
   };
+
   return (
     <div className="loginMain">
       <div className="loginContent">
@@ -74,7 +80,7 @@ const Login = (props) => {
           ></i>
         </div>
         <div className="buttons">
-          <button className="SignUpBtn" onClick={signUpRedirect}>
+          <button className="SignUpBtn" onClick={() => navigate("/Signup")}>
             Sign Up
           </button>
           {/* redirects to home page */}

@@ -4,17 +4,16 @@ import CustomersProfiles from "../../components/Customers Profiles/CustomersProf
 import Footer from "../../components/Footer/Footer";
 import NavBar from "../../components/NavBar/NavBar";
 
-// import { json } from "react-router-dom";
-
-// Axios Vs fetch
-// Axios
 const HomePage = () => {
+  console.log(localStorage.getItem("isAuth"));
+
   return (
     <>
       <NavBar />
       <div className="mainDiv">
         <CustomersProfiles />
       </div>
+
       <Footer />
     </>
   );

@@ -1,12 +1,14 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import logo from "./PMTLogoTransparent.svg";
 
 import "./NavBar.css";
 
 const NavBar = () => {
+   const navigate = useNavigate();
   // Navigation items array
-  let items = ["Home", "About", "Store"];
+  let items = ["Home", "About", "Logout"];
 
   //detecting clicks on menu button
   const [isActive, setIsActive] = useState(false);
@@ -14,6 +16,10 @@ const NavBar = () => {
   const toggleDropdown = () => {
     setIsActive(!isActive);
   };
+  const logout=()=>{
+    localStorage.setItem("isAuth",false);
+    navigate("/Login");
+  }
 
   return (
     <div className="NavBar">
@@ -22,7 +28,9 @@ const NavBar = () => {
       {/* Navigation Items - Large Screens */}
       <ul className="menuItems">
         {items.map((item, index) => (
-          <li key={index}>{item}</li>
+          <li key={index} onClick={index === 2 ? logout : null}>
+            {item}
+          </li>
         ))}
       </ul>
       {/* Menu Button - Small Screes*/}
@@ -34,7 +42,9 @@ const NavBar = () => {
       {/* Dropdown Menu */}
       <div className={isActive ? "toggledDropdown" : "dropdown-content"}>
         {items.map((item, index) => (
-          <li key={index}>{item}</li>
+          <li key={index} onClick={index === 2 ? logout : null}>
+            {item}
+          </li>
         ))}
       </div>
     </div>

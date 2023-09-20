@@ -14,9 +14,11 @@ const CustomersProfiles = () => {
   const URL = "http://amanimagdi.pythonanywhere.com/profiles/";
 
   let [allData, setAllDatal] = useState([]); //state representing list of profiles
-  const [dialogStatus, setDialogStatus] = useState(false); //Edit user pop-up dialog status (isOpen?)
-  const [deleteDialogStatus, setDeleteDialogStatus] = useState(false); //Pop-up dialog status (isOpen?)
+  const [dialogStatus, setDialogStatus] = useState(false); //Pop-up dialog status (isOpen?)
+  const [deleteDialogStatus, setDeleteDialogStatus] = useState(false); //Delete Pop-up dialog status (isOpen?)
   const [dialogType, setDialogType] = useState(""); //Types: UpdateDialogBox, AddDialog
+  const [errors, setErrors]= useState([]);
+
   const initialState = {
     name: "",
     phone: "",
@@ -46,7 +48,7 @@ const CustomersProfiles = () => {
       getAllData(); // Call to refresh the data
     })
     .catch((error) => {
-        console.error(error);
+        setErrors(error.response.data);
       });
   };
   //DELETE requests
@@ -71,9 +73,7 @@ const CustomersProfiles = () => {
         setSelectedUser(initialState); // Clear the selected user by setting it to an empty object
         getAllData(); // Call to refresh the data
       })
-      .catch((error) => {
-        console.error(error);
-      });
+      .catch((error) => {console.log(error.response.data)});
   };
   //Handling input changes in edit/add user dialog boxes
   const handleInputChange = (e) => {
@@ -121,6 +121,7 @@ const CustomersProfiles = () => {
         selectedUser={selectedUser}
         onAddUser={onAddUser}
         onUpdata={onUserProfileChange}
+        errors={errors}
       />
       {/* Delete User popup dialog box */}
       <dialog className="deleteDialogBox" open={deleteDialogStatus}>

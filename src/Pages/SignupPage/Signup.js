@@ -1,10 +1,15 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Signup.css";
 import axios from "axios";
 
-const Signup = () => {
+const Signup = (props) => {
+  useEffect(() => {
+    if (props.isAuth) {
+      navigate("/");
+    }
+  }, [props.isAuth]);
   // initiating user state
   const [user, setUserInfo] = useState({
     username: "",
