@@ -27,10 +27,20 @@
   font-size: 1rem;
   font-weight: bold;
 }
+/* Style for required asterisk */
+.required {
+  color: red;
+  margin-left: 4px; 
+}
 .loginContent .buttons {
   margin-top: 1rem;
   display: flex;
   justify-content: space-around;
+}
+.loginBtn[disabled] {
+  background-color: #ccc; /* Change the background color to a muted color */
+  color: #666; /* Change the text color to a darker shade */
+  cursor: not-allowed; /* Change the cursor to not-allowed */
 }
 .loginBtn {
   background-color: #5c92ea;

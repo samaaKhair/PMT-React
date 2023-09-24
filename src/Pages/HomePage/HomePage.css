@@ -1,5 +1,7 @@
 .mainDiv {
+  box-sizing: border-box;
   padding: 10px 10px;
+  overflow: hidden;
 }
 i,button{
   cursor: pointer;

@@ -1,7 +1,7 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Signup.css";
+import Alert from "../../components/Alert/Alert";
 import axios from "axios";
 
 const Signup = (props) => {
@@ -10,33 +10,54 @@ const Signup = (props) => {
       navigate("/");
     }
   }, [props.isAuth]);
+
   // initiating user state
   const [user, setUserInfo] = useState({
     username: "",
     password: "",
   });
+
   const [confirmPassword, setConfirmPassword] = useState("");
+
   //passsword state to check hidden on visible on toggle
   const [passwordType, setPasswordType] = useState("password");
+
   // an object to be used in navigation
   const navigate = useNavigate();
-  // changes user data dynamically by detecting required info from targeted element
-  const onUserInfoChange = (e) => {
-    setUserInfo({ ...user, [e.target.id]: e.target.value });
+
+  // State to track input validity
+  const [alertMessage, setAlertMessage]= useState("")
+ 
+  // Function to handle input changes
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setUserInfo({ ...user, [id]: value });
+    setConfirmPassword(
+      e.target.id === "passwordConfirm" ? e.target.value : confirmPassword
+    );
   };
 
   //on show/hide button click checks type of password to change it
   const togglePassword = () => {
     if (passwordType === "password") {
       setPasswordType("text");
-      return;
+    } else {
+      setPasswordType("password");
     }
-    setPasswordType("password");
+  };
+
+  // Function to determine button disable state
+  const isButtonDisabled = () => {
+    const isUsernameValid = user.username.trim() !== "";
+    const isPasswordValid = user.password.trim() !== "";
+    const isConfirmPasswordValid = confirmPassword.trim() !== "";
+
+    return !(isUsernameValid && isPasswordValid && isConfirmPasswordValid);
   };
   // confirming password
   const checkPassword = () => {
     if (confirmPassword !== user.password) {
-      alert("Password Mismatch :( ");
+      setAlertMessage("Password Mismatch!");
       return false;
     } else return true;
   };
@@ -48,31 +69,36 @@ const Signup = (props) => {
           navigate("/");
         })
         .catch((error) => {
-          alert(error.response.data.username);
+          setAlertMessage(error.response.data.username);
         });
     }
   };
+
   return (
     <div className="SignupMain">
       <div className="SignupContent">
         <h1 id="header">Sign Up!</h1>
 
-        <label htmlFor="username">Username</label>
+        <label htmlFor="username">
+          Username<span className="required">*</span>
+        </label>
         <input
           type="text"
           id="username"
           value={user.username}
-          onChange={onUserInfoChange}
+          onChange={handleInputChange}
           autoComplete="off"
         />
 
-        <label htmlFor="password">Password</label>
+        <label htmlFor="password">
+          Password<span className="required">*</span>
+        </label>
         <div className="passwordCell">
           <input
             type={passwordType}
             id="password"
             value={user.password}
-            onChange={onUserInfoChange}
+            onChange={handleInputChange}
             autoComplete="off"
           />
           {/* checks if show/hide button is clicked */}
@@ -86,17 +112,24 @@ const Signup = (props) => {
             onClick={togglePassword}
           ></i>
         </div>
-        <label htmlFor="passwordConfirm">Confirm Password</label>
+
+        <label htmlFor="passwordConfirm">
+          Confirm Password<span className="required">*</span>
+        </label>
         <input
           type={passwordType}
           id="passwordConfirm"
           value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          onChange={handleInputChange}
           autoComplete="off"
         />
-
-        {/* confirms password, if correct redirects to home page */}
-        <button className="SignupBtn" onClick={signUp}>
+        <Alert message={alertMessage}/>
+        {/* Confirm all fields are not empty, then enable the button */}
+        <button
+          className="SignupBtn"
+          onClick={signUp}
+          disabled={isButtonDisabled()}
+        >
           Sign Up
         </button>
       </div>

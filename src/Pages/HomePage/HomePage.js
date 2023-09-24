@@ -4,12 +4,11 @@ import CustomersProfiles from "../../components/Customers Profiles/CustomersProf
 import Footer from "../../components/Footer/Footer";
 import NavBar from "../../components/NavBar/NavBar";
 
-const HomePage = () => {
-  console.log(localStorage.getItem("isAuth"));
+const HomePage = (props) => {
 
   return (
     <>
-      <NavBar />
+      <NavBar setIsAuth={props.setIsAuth} />
       <div className="mainDiv">
         <CustomersProfiles />
       </div>

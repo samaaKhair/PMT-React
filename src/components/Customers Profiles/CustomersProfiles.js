@@ -17,7 +17,7 @@ const CustomersProfiles = () => {
   const [dialogStatus, setDialogStatus] = useState(false); //Pop-up dialog status (isOpen?)
   const [deleteDialogStatus, setDeleteDialogStatus] = useState(false); //Delete Pop-up dialog status (isOpen?)
   const [dialogType, setDialogType] = useState(""); //Types: UpdateDialogBox, AddDialog
-  const [errors, setErrors]= useState([]);
+  const [alertMessage, setAlertMessage] = useState("");
 
   const initialState = {
     name: "",
@@ -35,30 +35,32 @@ const CustomersProfiles = () => {
     axios
       .get(URL)
       .then((response) => setAllDatal(response.data))
-      .catch((error) => {
-        console.error(error);
-      });
+      .catch((error) => {});
   };
   //PUT requests
   const onUserProfileChange = (id) => {
     axios
-    .put(`${URL}/${id}/`, selectedUser).then((res) => {
-      setDialogStatus(false);
-      setSelectedUser(initialState); // Clear the selected user by setting it to an empty object
-      getAllData(); // Call to refresh the data
-    })
-    .catch((error) => {
-        setErrors(error.response.data);
+      .put(`${URL}/${id}/`, selectedUser)
+      .then((res) => {
+        setDialogStatus(false);
+        setSelectedUser(initialState); // Clear the selected user by setting it to an empty object
+        getAllData(); // Call to refresh the data
+        setAlertMessage("");
+      })
+      .catch((error) => {
+        for (let key in error.response.data) {
+          setAlertMessage(`${key}:${error.response.data[key]}`);
+        }
       });
   };
   //DELETE requests
   const onDeleteUserInfo = (Userid) => {
-    setDeleteDialogStatus(false);
     axios
       .delete(`${URL}/${Userid}`)
       .then((response) => {
         setSelectedUser(initialState); // Clear the selected user by setting it to an empty object
         getAllData(); // Call to refresh the data
+        setDeleteDialogStatus(false);
       })
       .catch((error) => {
         console.error(error);
@@ -66,14 +68,19 @@ const CustomersProfiles = () => {
   };
   //POST request
   const onAddUser = () => {
-    setDialogStatus(false);
     axios
       .post(`${URL}`, selectedUser)
       .then(() => {
         setSelectedUser(initialState); // Clear the selected user by setting it to an empty object
         getAllData(); // Call to refresh the data
+        setDialogStatus(false);
+        setAlertMessage("");
       })
-      .catch((error) => {console.log(error.response.data)});
+      .catch((error) => {
+        for (let key in error.response.data) {
+          setAlertMessage(`${key}:${error.response.data[key]}`);
+        }
+      });
   };
   //Handling input changes in edit/add user dialog boxes
   const handleInputChange = (e) => {
@@ -101,6 +108,7 @@ const CustomersProfiles = () => {
   const onDialogClose = () => {
     setDialogStatus(false);
     setSelectedUser(initialState); // Clear the selected user by setting it to an empty object
+    setAlertMessage("");
   };
 
   return (
@@ -121,7 +129,7 @@ const CustomersProfiles = () => {
         selectedUser={selectedUser}
         onAddUser={onAddUser}
         onUpdata={onUserProfileChange}
-        errors={errors}
+        alertMessage={alertMessage}
       />
       {/* Delete User popup dialog box */}
       <dialog className="deleteDialogBox" open={deleteDialogStatus}>

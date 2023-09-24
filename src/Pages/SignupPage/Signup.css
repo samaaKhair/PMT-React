@@ -27,6 +27,12 @@
   font-size: 1rem;
   font-weight: bold;
 }
+/* Style for required asterisk */
+.required {
+  color: red;
+  margin-left: 4px;
+}
+
 .SignupBtn {
   margin-top: 1rem;
   width: fit-content;
@@ -38,7 +44,11 @@
   background-color: #5c92ea;
   color: white;
 }
-
+.SignupBtn[disabled] {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
 .passwordCell {
   position: relative;
 }

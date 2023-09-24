@@ -82,3 +82,8 @@
 .deleteButtons button {
   padding: 0.5rem 4rem;
 }
+.updateButton[disabled], .AddUserButton[disabled] {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}

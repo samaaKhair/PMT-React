@@ -1,12 +1,12 @@
 import React from 'react'
-import './alert.css'
+import './Alert.css'
 
-const alert = (props) => {
+const Alert = (props) => {
   return (
     <div className='alertBox'>
-      <span id={props.id}/>{props.message}<span/>
+      <span/>{props.message}<span/>
     </div>
   )
 }
 
-export default alert
+export default Alert
