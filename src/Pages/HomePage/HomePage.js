@@ -5,10 +5,9 @@ import Footer from "../../components/Footer/Footer";
 import NavBar from "../../components/NavBar/NavBar";
 
 const HomePage = (props) => {
-
   return (
     <>
-      <NavBar setIsAuth={props.setIsAuth} />
+      <NavBar currentUsername={props.currentUsername} setIsAuth={props.setIsAuth} />
       <div className="mainDiv">
         <CustomersProfiles />
       </div>

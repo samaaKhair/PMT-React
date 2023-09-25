@@ -6,7 +6,7 @@
 }
 .loginContent {
   display: flex;
-  width: max-content;
+  width: 22rem;
   flex-direction: column;
   padding: 2.5rem;
   margin: 0px;

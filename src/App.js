@@ -11,18 +11,19 @@ function App() {
     const savedAuth = localStorage.getItem("isAuth");
     return savedAuth? savedAuth==="true":false;
   })
+  const [currentUsername, setCurrentUsername] = useState("");
 
   return (
     <Fragment>
       {/* Routing elements */}
       <Routes>
         <Route element={<PrivateRoutes isAuth={isAuth} />}>
-          <Route path="/" element={<HomePage setIsAuth={setIsAuth} />} />
+          <Route path="/" element={<HomePage currentUsername={currentUsername} setIsAuth={setIsAuth} />} />
           <Route path="/About" element={<AboutPage setIsAuth={setIsAuth} />} />
         </Route>
         <Route
           path="/Login"
-          element={<Login isAuth={isAuth} setIsAuth={setIsAuth} />}
+          element={<Login setCurrentUsername={setCurrentUsername} isAuth={isAuth} setIsAuth={setIsAuth} />}
         />
         <Route path="/Signup" element={<Signup isAuth={isAuth} />} />
       </Routes>

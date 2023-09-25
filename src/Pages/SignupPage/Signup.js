@@ -26,8 +26,11 @@ const Signup = (props) => {
   const navigate = useNavigate();
 
   // State to track input validity
-  const [alertMessage, setAlertMessage]= useState("")
- 
+  const [alertMessage, setAlertMessage] = useState("");
+
+  //setting alert popup status
+   const [isAlertOpen, setIsAlertOpen] = useState(false);
+
   // Function to handle input changes
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -57,9 +60,14 @@ const Signup = (props) => {
   // confirming password
   const checkPassword = () => {
     if (confirmPassword !== user.password) {
+      setIsAlertOpen(true);
       setAlertMessage("Password Mismatch!");
       return false;
     } else return true;
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    signUp();
   };
   const signUp = () => {
     if (checkPassword()) {
@@ -69,6 +77,7 @@ const Signup = (props) => {
           navigate("/");
         })
         .catch((error) => {
+          setIsAlertOpen(true);
           setAlertMessage(error.response.data.username);
         });
     }
@@ -76,7 +85,7 @@ const Signup = (props) => {
 
   return (
     <div className="SignupMain">
-      <div className="SignupContent">
+      <form onSubmit={handleSubmit} className="SignupContent">
         <h1 id="header">Sign Up!</h1>
 
         <label htmlFor="username">
@@ -123,16 +132,16 @@ const Signup = (props) => {
           onChange={handleInputChange}
           autoComplete="off"
         />
-        <Alert message={alertMessage}/>
+        <Alert isOpen={isAlertOpen} message={alertMessage} />
         {/* Confirm all fields are not empty, then enable the button */}
         <button
+          type="submit"
           className="SignupBtn"
-          onClick={signUp}
           disabled={isButtonDisabled()}
         >
           Sign Up
         </button>
-      </div>
+      </form>
     </div>
   );
 };

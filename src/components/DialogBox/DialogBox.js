@@ -100,7 +100,7 @@ const DialogBox = (props) => {
             id="frame"
             value={props.selectedUser.frame}
           />
-          <Alert message={props.alertMessage} />
+          <Alert isOpen={props.isAlertOpen} message={props.alertMessage} />
           {/* Update Buttons */}
           <div className="buttons">
             <button className="closeButton" onClick={props.onDialogClose}>

@@ -1,8 +1,12 @@
-.alertBox{
+.alertBoxOpen{
     display: flex;
     justify-content: center;
     background-color: rgb(243, 170, 170);
     color: rgb(102, 1, 1);
-    font-weight: bold;
-
+    text-align: center;
+    padding: 6px 4px;
+    margin-top: 2px;
+}
+.alertBoxClosed{
+    padding:0px;
 }

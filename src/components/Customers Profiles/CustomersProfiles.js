@@ -5,7 +5,7 @@ import DialogBox from "../DialogBox/DialogBox";
 import "../DialogBox/DialogBox.css";
 import { useEffect } from "react";
 
-const CustomersProfiles = () => {
+const CustomersProfiles = (props) => {
   useEffect(() => {
     // get all data
     getAllData();
@@ -18,6 +18,9 @@ const CustomersProfiles = () => {
   const [deleteDialogStatus, setDeleteDialogStatus] = useState(false); //Delete Pop-up dialog status (isOpen?)
   const [dialogType, setDialogType] = useState(""); //Types: UpdateDialogBox, AddDialog
   const [alertMessage, setAlertMessage] = useState("");
+  
+   const [isAlertOpen, setIsAlertOpen] = useState(false);//alert state
+  
 
   const initialState = {
     name: "",
@@ -29,6 +32,7 @@ const CustomersProfiles = () => {
     frame: "",
   };
   let [selectedUser, setSelectedUser] = useState(initialState); //selected user to be updated
+
 
   // Get all data
   const getAllData = () => {
@@ -45,10 +49,12 @@ const CustomersProfiles = () => {
         setDialogStatus(false);
         setSelectedUser(initialState); // Clear the selected user by setting it to an empty object
         getAllData(); // Call to refresh the data
+        setIsAlertOpen(false);
         setAlertMessage("");
       })
       .catch((error) => {
         for (let key in error.response.data) {
+          setIsAlertOpen(true);
           setAlertMessage(`${key}:${error.response.data[key]}`);
         }
       });
@@ -74,10 +80,13 @@ const CustomersProfiles = () => {
         setSelectedUser(initialState); // Clear the selected user by setting it to an empty object
         getAllData(); // Call to refresh the data
         setDialogStatus(false);
+        setIsAlertOpen(false);
         setAlertMessage("");
+        
       })
       .catch((error) => {
         for (let key in error.response.data) {
+          setIsAlertOpen(true);
           setAlertMessage(`${key}:${error.response.data[key]}`);
         }
       });
@@ -108,6 +117,7 @@ const CustomersProfiles = () => {
   const onDialogClose = () => {
     setDialogStatus(false);
     setSelectedUser(initialState); // Clear the selected user by setting it to an empty object
+    setIsAlertOpen(false);
     setAlertMessage("");
   };
 
@@ -117,7 +127,7 @@ const CustomersProfiles = () => {
         <h2 className="pageTitle">Users' profiles</h2>
         <button className="addUserIcon" onClick={openAddUserDialog}>
           <i className="fa fa-user-plus fa-lg" aria-hidden="true" />
-          CREATE USER
+          CREATE PROFILE
         </button>
       </div>
       {/* Add New User popup dialog box */}
@@ -130,6 +140,7 @@ const CustomersProfiles = () => {
         onAddUser={onAddUser}
         onUpdata={onUserProfileChange}
         alertMessage={alertMessage}
+        isAlertOpen={isAlertOpen}
       />
       {/* Delete User popup dialog box */}
       <dialog className="deleteDialogBox" open={deleteDialogStatus}>

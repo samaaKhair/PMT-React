@@ -33,13 +33,9 @@
 }
 .mainTableDiv {
   overflow: auto;
-  min-height: 72.2vh;
+  min-height: 74.4vh;
 }
-.IconsColumn {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
+
 .editIcon {
   padding: 0 8px;
   color: #007bff;

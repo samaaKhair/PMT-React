@@ -9,7 +9,7 @@ const Login = (props) => {
   const navigate = useNavigate();
   useEffect(() => {
     if (props.isAuth) {
-      localStorage.setItem("isAuth", props.isAuth.toString());
+      localStorage.setItem("isAuth", props.isAuth);
       navigate("/");
     }
   }, [props.isAuth]);
@@ -22,6 +22,7 @@ const Login = (props) => {
 
   // State to track input validity
   const [alertMessage, setAlertMessage] = useState("");
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   // changes user data dynamically by detecting required info from targeted element
   const onUserInfoChange = (e) => {
@@ -44,24 +45,30 @@ const Login = (props) => {
 
     return !(isUsernameValid && isPasswordValid);
   };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    login();
+  };
+
   const login = () => {
     axios
       .post(`${URL}`, user)
       .then(() => {
         // localStorage.setItem("isAuth", true);
         props.setIsAuth(true);
-        // navigate("/");
+        localStorage.setItem("Current Username",user.username);
+        // props.setCurrentUsername(user.username);
       })
       .catch((error) => {
+        setIsAlertOpen(true);
         setAlertMessage(error.response.data.detail);
+        
       });
-
-    console.log(localStorage.getItem("isAuth"));
   };
 
   return (
     <div className="loginMain">
-      <div className="loginContent">
+      <form onSubmit={handleSubmit} className="loginContent">
         <h1 id="header">Welcome Back!</h1>
         <label htmlFor="username">
           Username<span className="required">*</span>
@@ -72,7 +79,6 @@ const Login = (props) => {
           value={user.username}
           onChange={onUserInfoChange}
           autoComplete="off"
-          required
         />
         <label htmlFor="password">
           Password<span className="required">*</span>
@@ -96,21 +102,25 @@ const Login = (props) => {
             onClick={togglePassword}
           ></i>
         </div>
-        <Alert message={alertMessage} />
+        <Alert isOpen={isAlertOpen} message={alertMessage} />
         <div className="buttons">
-          <button className="SignUpBtn" onClick={() => navigate("/Signup")}>
+          <button
+            className="SignUpBtn"
+            type="button"
+            onClick={() => navigate("/Signup")}
+          >
             Sign Up
           </button>
           {/* redirects to home page */}
           <button
+            type="submit"
             className="loginBtn"
-            onClick={login}
             disabled={isButtonDisabled()}
           >
             Login
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
