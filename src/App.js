@@ -1,4 +1,4 @@
-import React, { Fragment, useState} from "react";
+import React, { Fragment} from "react";
 import PrivateRoutes from "./PrivateRoute";
 import HomePage from "./Pages/HomePage/HomePage";
 import AboutPage from "./Pages/AboutPage/AboutPage"
@@ -7,25 +7,20 @@ import Login from "./Pages/LoginPage/Login";
 import Signup from "./Pages/SignupPage/Signup";
 
 function App() {
-  const [isAuth,setIsAuth] = useState(()=>{
-    const savedAuth = localStorage.getItem("isAuth");
-    return savedAuth? savedAuth==="true":false;
-  })
-  const [currentUsername, setCurrentUsername] = useState("");
 
   return (
     <Fragment>
       {/* Routing elements */}
       <Routes>
-        <Route element={<PrivateRoutes isAuth={isAuth} />}>
-          <Route path="/" element={<HomePage currentUsername={currentUsername} setIsAuth={setIsAuth} />} />
-          <Route path="/About" element={<AboutPage setIsAuth={setIsAuth} />} />
+        <Route element={<PrivateRoutes />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/About" element={<AboutPage />} />
         </Route>
         <Route
           path="/Login"
-          element={<Login setCurrentUsername={setCurrentUsername} isAuth={isAuth} setIsAuth={setIsAuth} />}
+          element={<Login />}
         />
-        <Route path="/Signup" element={<Signup isAuth={isAuth} />} />
+        <Route path="/Signup" element={<Signup  />} />
       </Routes>
     </Fragment>
   );

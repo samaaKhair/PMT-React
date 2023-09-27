@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "./Signup.css";
 import Alert from "../../components/Alert/Alert";
 import axios from "axios";
 
 const Signup = (props) => {
+  // an object to be used in navigation
+  const navigate = useNavigate();
+  const isAuth = useSelector((state) => state.isAuth);
+
   useEffect(() => {
-    if (props.isAuth) {
+    if (isAuth) {
       navigate("/");
     }
-  }, [props.isAuth]);
+  }, [isAuth]);
 
   // initiating user state
   const [user, setUserInfo] = useState({
@@ -22,14 +27,11 @@ const Signup = (props) => {
   //passsword state to check hidden on visible on toggle
   const [passwordType, setPasswordType] = useState("password");
 
-  // an object to be used in navigation
-  const navigate = useNavigate();
-
   // State to track input validity
   const [alertMessage, setAlertMessage] = useState("");
 
   //setting alert popup status
-   const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   // Function to handle input changes
   const handleInputChange = (e) => {

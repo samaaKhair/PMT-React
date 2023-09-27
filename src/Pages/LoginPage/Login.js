@@ -1,23 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setAuth, setUsername } from "../../redux/actions";
 import Alert from "../../components/Alert/Alert";
 import "./Login.css";
 import axios from "axios";
 
 const Login = (props) => {
-  // an object to be used in navigation
+  //Initializers
+  const isAuth = useSelector((state) => state.isAuth);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  //to ensure trap in home page on refresh, once isAuth is changed
   useEffect(() => {
-    if (props.isAuth) {
-      localStorage.setItem("isAuth", props.isAuth);
+    if (isAuth) {
       navigate("/");
     }
-  }, [props.isAuth]);
+  }, [isAuth]);
+
   const URL = "http://amanimagdi.pythonanywhere.com/api/token/";
   const [user, setUserInfo] = useState({
     username: "",
     password: "",
   });
+
   const [passwordType, setPasswordType] = useState("password"); //passsword state to check hidden on visible on toggle
 
   // State to track input validity
@@ -38,6 +45,7 @@ const Login = (props) => {
     }
     setPasswordType("password");
   };
+
   // Function to determine button disable state
   const isButtonDisabled = () => {
     const isUsernameValid = user.username.trim() !== "";
@@ -45,6 +53,7 @@ const Login = (props) => {
 
     return !(isUsernameValid && isPasswordValid);
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     login();
@@ -54,15 +63,13 @@ const Login = (props) => {
     axios
       .post(`${URL}`, user)
       .then(() => {
-        // localStorage.setItem("isAuth", true);
-        props.setIsAuth(true);
-        localStorage.setItem("Current Username",user.username);
-        // props.setCurrentUsername(user.username);
+        dispatch(setAuth(true));
+        dispatch(setUsername(user.username));
       })
       .catch((error) => {
+        console.error(error);
         setIsAlertOpen(true);
         setAlertMessage(error.response.data.detail);
-        
       });
   };
 

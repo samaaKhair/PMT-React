@@ -1,13 +1,17 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { signout } from "../../redux/actions";
 import logo from "./PMTLogoTransparent.svg";
 import "./NavBar.css";
 
 const NavBar = (props) => {
+  //intializations
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const currentUsername = useSelector((state) => state.username);
 
-  let currentUser = localStorage.getItem("Current Username");
   // Navigation items array
   let items = ["Home", "About"];
 
@@ -22,12 +26,14 @@ const NavBar = (props) => {
     setIsMenuActive(!isMenuActive);
   };
 
+  //dropdown that is triggered on clicking username
   const toggleDropdownlogOut = () => {
     setIsProfileDropActive(!isProfileDropActive);
   };
+  
+  //clearing persisted states
   const logout = () => {
-    props.setIsAuth(false);
-    localStorage.clear();
+    dispatch(signout());
   };
 
   return (
@@ -68,7 +74,7 @@ const NavBar = (props) => {
         })}
         <div className="logoutDropdown">
           <button className="usernameBtn" onClick={toggleDropdownlogOut}>
-            {currentUser}
+            {currentUsername}
             <i className="fa fa-angle-down fa-lg" aria-hidden="true" />
           </button>
           <li

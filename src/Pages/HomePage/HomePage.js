@@ -7,7 +7,7 @@ import NavBar from "../../components/NavBar/NavBar";
 const HomePage = (props) => {
   return (
     <>
-      <NavBar currentUsername={props.currentUsername} setIsAuth={props.setIsAuth} />
+      <NavBar/>
       <div className="mainDiv">
         <CustomersProfiles />
       </div>

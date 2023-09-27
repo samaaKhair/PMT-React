@@ -17,10 +17,9 @@ const CustomersProfiles = (props) => {
   const [dialogStatus, setDialogStatus] = useState(false); //Pop-up dialog status (isOpen?)
   const [deleteDialogStatus, setDeleteDialogStatus] = useState(false); //Delete Pop-up dialog status (isOpen?)
   const [dialogType, setDialogType] = useState(""); //Types: UpdateDialogBox, AddDialog
+  //initizalizing alert message and status
   const [alertMessage, setAlertMessage] = useState("");
-  
-   const [isAlertOpen, setIsAlertOpen] = useState(false);//alert state
-  
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   const initialState = {
     name: "",
@@ -32,7 +31,6 @@ const CustomersProfiles = (props) => {
     frame: "",
   };
   let [selectedUser, setSelectedUser] = useState(initialState); //selected user to be updated
-
 
   // Get all data
   const getAllData = () => {
@@ -82,7 +80,6 @@ const CustomersProfiles = (props) => {
         setDialogStatus(false);
         setIsAlertOpen(false);
         setAlertMessage("");
-        
       })
       .catch((error) => {
         for (let key in error.response.data) {
